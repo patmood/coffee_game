@@ -3,8 +3,8 @@ gfx =
     canvas = document.querySelector "#game"
     @ctx = canvas?.getContext? "2d"
     return false if not @ctx
-    # canvas.width = 800
-    # canvas.height = 400
+    canvas.width = 800
+    canvas.height = 400
     @w = canvas.width
     @h = canvas.height
     true

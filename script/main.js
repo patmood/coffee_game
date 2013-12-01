@@ -9,6 +9,8 @@ gfx = {
     if (!this.ctx) {
       return false;
     }
+    canvas.width = 800;
+    canvas.height = 400;
     this.w = canvas.width;
     this.h = canvas.height;
     return true;
@@ -86,12 +88,26 @@ game = {
     }
     gfx.clear;
     gfx.load(function() {
-      var n, _i, _len, _results;
+      var level, row, tile, x, xPos, y, yPos, _i, _len, _results;
       gfx.drawSprite(0, 0, 100, 50);
+      level = makeLevel(level1);
       _results = [];
-      for (_i = 0, _len = ninjas.length; _i < _len; _i++) {
-        n = ninjas[_i];
-        _results.push(drawANinja(n));
+      for (y = _i = 0, _len = level.length; _i < _len; y = ++_i) {
+        row = level[y];
+        _results.push((function() {
+          var _j, _len1, _results1;
+          _results1 = [];
+          for (x = _j = 0, _len1 = row.length; _j < _len1; x = ++_j) {
+            tile = row[x];
+            if (!tile) {
+              continue;
+            }
+            xPos = x * gfx.tileW;
+            yPos = y * gfx.tileH;
+            _results1.push(gfx.drawSprite(tile[0], tile[1], xPos, yPos));
+          }
+          return _results1;
+        })());
       }
       return _results;
     });
