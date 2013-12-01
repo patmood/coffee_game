@@ -7,12 +7,6 @@ game =
     gfx.load ->
       gfx.drawSprite 0, 0, 100, 50
       drawANinja n for n in ninjas
-
-      # for y in [0..19]
-      #   for x in [0..23]
-      #     col = 4
-      #     row = rand 2
-      #     gfx.drawSprite col,row,x*24, y*24
   rand = (max, min=0) ->
     Math.floor  (Math.random()*(max-min) + min)
   makeANinja = () ->
@@ -25,14 +19,3 @@ game =
 
 # Start game
 game.init()
-
-
-# c = gfx.ctx
-# color = Math.floor(Math.random()*360)
-# c.fillStyle = "hsl(#{color}, 60%, 50%)"
-# c.fillRect 10, 10, 300, 80
-# c.strokeStyle = "#3f3f3f"
-# c.strokeRect 10, 10, 300, 80
-# c.fillStyle = "#202020"
-# c.font = "14pt monospace"
-# c.fillText "Professon Digman-Runner", 30, 55
