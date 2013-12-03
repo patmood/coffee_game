@@ -15,7 +15,7 @@ level1 = """
 makeLevel = (ascii) ->
   tiles =
     "@": [4,1]
-    "0": [4,0]
+    "O": [4,0]
     "*": [5,1]
     "#": [5,0]
   asciiMap = (row.split "" for row in ascii.split "\n")
@@ -33,12 +33,24 @@ game =
     gfx.load ->
       gfx.drawSprite 0, 0, 100, 50
       level = makeLevel level1
-      for row, y in level
-        for tile, x in row
-          continue if not tile
-          xPos = x * gfx.tileW
-          yPos = y * gfx.tileH
-          gfx.drawSprite tile[0],tile[1], xPos, yPos
+
+      # Basic Game Loop
+      setInterval ->
+        # run game things
+        player.update()
+        gfx.clear()
+
+        # draw the level
+        for row, y in level
+          for tile, x in row
+            continue if not tile
+            xPos = x * gfx.tileW
+            yPos = y * gfx.tileH
+            gfx.drawSprite tile[0],tile[1], xPos, yPos
+
+        player.render(gfx)
+      , 33
+
 
     rand = (max, min=0) ->
       Math.floor  (Math.random()*(max-min) + min)
@@ -50,5 +62,5 @@ game =
 
     ninjas = (makeANinja() for [0..20])
 
-# Start game
+# start the game
 game.init()
