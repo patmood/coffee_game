@@ -89,7 +89,7 @@ makeLevel = (ascii) ->
       game.tick()
   update: ->
     level = makeLevel level1
-    professor.update()
+    player.update()
     for row, y in level
       for tile, x in row
         continue if not tile
@@ -97,6 +97,8 @@ makeLevel = (ascii) ->
         yPos = y * gfx.tileH
         gfx.drawSprite tile[0],tile[1], xPos, yPos
   render: ->
-    professor.render(gfx)
+    player.render gfx
+    ninja1.render gfx
 
-professor = new Player gfx.tileW * 3, gfx.tileH * 5
+player = new Player gfx.tileW * 3, gfx.tileH * 5
+ninja1 = new Ninja gfx.tileW * 4, gfx.tileH * 5
