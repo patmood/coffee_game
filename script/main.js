@@ -91,11 +91,23 @@ Level = (function() {
   Level.prototype.ninjas = [];
 
   function Level(level, game) {
+    var ninja;
     this.game = game;
     this.load(level);
+    this.addNinja(1, 1);
+    ninja = this.ninjas[0];
+    alert("Ninja 1 at: " + ninja.x + ", " + ninja.y);
   }
 
   Level.prototype.load = function(level) {};
+
+  Level.prototype.addNinja = function(x, y) {
+    var ninja, xPos, yPos;
+    xPos = x * gfx.tileW;
+    yPos = y * gfx.tileH;
+    ninja = new Ninja(this, xPos, yPos);
+    return this.ninjas.push(ninja);
+  };
 
   Level.prototype.update = function() {};
 
@@ -248,7 +260,7 @@ this.game = {
   },
   update: function() {
     var level, row, tile, x, xPos, y, yPos, _i, _len, _results;
-    level = makeLevel(level1);
+    level = new Level;
     player.update();
     _results = [];
     for (y = _i = 0, _len = level.length; _i < _len; y = ++_i) {

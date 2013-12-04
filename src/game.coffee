@@ -88,7 +88,7 @@ makeLevel = (ascii) ->
     requestAnimationFrame ->
       game.tick()
   update: ->
-    level = makeLevel level1
+    level = new Level
     player.update()
     for row, y in level
       for tile, x in row
