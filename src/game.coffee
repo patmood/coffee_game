@@ -24,43 +24,43 @@ makeLevel = (ascii) ->
     for col in row
       tiles[col])
 
-game =
-  init: ->
-    if not gfx.init()
-      alert "Could not set up game canvas!"
-      return # abort game
-    gfx.clear
-    gfx.load ->
-      gfx.drawSprite 0, 0, 100, 50
-      level = makeLevel level1
+# game =
+#   init: ->
+#     if not gfx.init()
+#       alert "Could not set up game canvas!"
+#       return # abort game
+#     gfx.clear
+#     gfx.load ->
+#       gfx.drawSprite 0, 0, 100, 50
+#       level = makeLevel level1
 
-      # Basic Game Loop
-      setInterval ->
-        # run game things
-        player.update()
-        gfx.clear()
+#       # Basic Game Loop
+#       setInterval ->
+#         # run game things
+#         player.update()
+#         gfx.clear()
 
-        # draw the level
-        for row, y in level
-          for tile, x in row
-            continue if not tile
-            xPos = x * gfx.tileW
-            yPos = y * gfx.tileH
-            gfx.drawSprite tile[0],tile[1], xPos, yPos
+#         # draw the level
+#         for row, y in level
+#           for tile, x in row
+#             continue if not tile
+#             xPos = x * gfx.tileW
+#             yPos = y * gfx.tileH
+#             gfx.drawSprite tile[0],tile[1], xPos, yPos
 
-        player.render(gfx)
-      , 33
+#         player.render(gfx)
+#       , 33
 
 
-    rand = (max, min=0) ->
-      Math.floor  (Math.random()*(max-min) + min)
-    makeANinja = () ->
-      x: rand gfx.w
-      y: rand gfx.h
+#     rand = (max, min=0) ->
+#       Math.floor  (Math.random()*(max-min) + min)
+#     makeANinja = () ->
+#       x: rand gfx.w
+#       y: rand gfx.h
 
-    drawANinja = (n) -> gfx.drawSprite 0, 1, n.x, n.y
+#     drawANinja = (n) -> gfx.drawSprite 0, 1, n.x, n.y
 
-    ninjas = (makeANinja() for [0..20])
+#     ninjas = (makeANinja() for [0..20])
 
 @game =
   running: false
@@ -69,8 +69,12 @@ game =
       alert "Sorry, no canvas"
       return
     gfx.load -> game.reset()
-  stop: -> @running = false
-  start: -> @running = true
+  stop: ->
+    @running = false
+    console.log "Stopping..."
+  start: ->
+    @running = true
+    console.log "Starting..."
   reset: ->
     keys.reset()
     if not @running
@@ -84,5 +88,15 @@ game =
     requestAnimationFrame ->
       game.tick()
   update: ->
+    level = makeLevel level1
+    professor.update()
+    for row, y in level
+      for tile, x in row
+        continue if not tile
+        xPos = x * gfx.tileW
+        yPos = y * gfx.tileH
+        gfx.drawSprite tile[0],tile[1], xPos, yPos
   render: ->
+    professor.render(gfx)
 
+professor = new Player gfx.tileW * 3, gfx.tileH * 5

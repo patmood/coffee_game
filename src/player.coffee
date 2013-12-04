@@ -1,8 +1,8 @@
-player =
-  x: gfx.tileW * 3
-  y: gfx.tileH * 5
+class Player
+  constructor: (@x, @y) ->
+  # x: gfx.tileW * 3
+  # y: gfx.tileH * 5
   speed: 4
-
   update: ->
     @x -= @speed if keys.left
     @x += @speed if keys.right
