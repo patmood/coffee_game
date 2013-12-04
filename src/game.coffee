@@ -62,5 +62,27 @@ game =
 
     ninjas = (makeANinja() for [0..20])
 
-# start the game
-game.init()
+@game =
+  running: false
+  init: ->
+    if not gfx.init()
+      alert "Sorry, no canvas"
+      return
+    gfx.load -> game.reset()
+  stop: -> @running = false
+  start: -> @running = true
+  reset: ->
+    keys.reset()
+    if not @running
+      @start()
+      @tick()
+  tick: ->
+    return if not @running
+    gfx.clear()
+    @update()
+    @render()
+    requestAnimationFrame ->
+      game.tick()
+  update: ->
+  render: ->
+
