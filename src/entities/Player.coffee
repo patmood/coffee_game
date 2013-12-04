@@ -1,4 +1,7 @@
 class Player extends Entity
+  constructor: ->
+    super
+    @dir = "RIGHT"
   update: ->
     @x -= @speed if keys.left
     @x += @speed if keys.right
