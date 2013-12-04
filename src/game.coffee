@@ -88,14 +88,14 @@ makeLevel = (ascii) ->
     requestAnimationFrame ->
       game.tick()
   update: ->
-    level = new Level
+    mylevel = new Level levels[0]
     player.update()
-    for row, y in level
-      for tile, x in row
-        continue if not tile
-        xPos = x * gfx.tileW
-        yPos = y * gfx.tileH
-        gfx.drawSprite tile[0],tile[1], xPos, yPos
+    # for row, y in level
+    #   for tile, x in row
+    #     continue if not tile
+    #     xPos = x * gfx.tileW
+    #     yPos = y * gfx.tileH
+    #     gfx.drawSprite tile[0],tile[1], xPos, yPos
   render: ->
     player.render gfx
     ninja1.render gfx

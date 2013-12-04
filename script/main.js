@@ -106,7 +106,50 @@ Level = (function() {
     alert("Ninja 1 at: " + ninja.x + ", " + ninja.y);
   }
 
-  Level.prototype.load = function(level) {};
+  Level.prototype.load = function(level) {
+    var asciiMap, col, row, x, y;
+    this.ninjas = [];
+    this.treasures = 0;
+    asciiMap = (function() {
+      var _i, _len, _ref, _results;
+      _ref = level.data.split("\n");
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        row = _ref[_i];
+        _results.push(row.split(""));
+      }
+      return _results;
+    })();
+    this.map = (function() {
+      var _i, _len, _results;
+      _results = [];
+      for (y = _i = 0, _len = asciiMap.length; _i < _len; y = ++_i) {
+        row = asciiMap[y];
+        _results.push((function() {
+          var _j, _len1, _results1;
+          _results1 = [];
+          for (x = _j = 0, _len1 = row.length; _j < _len1; x = ++_j) {
+            col = row[x];
+            switch (col) {
+              case "@":
+                _results1.push(new Dirt());
+                break;
+              case "X":
+                this.addNinja(x, y);
+                _results1.push(new Block());
+                break;
+              default:
+                _results1.push(new Block());
+            }
+          }
+          return _results1;
+        }).call(this));
+      }
+      return _results;
+    }).call(this);
+    this.h = this.map.length;
+    return this.w = this.map[0].length;
+  };
 
   Level.prototype.addNinja = function(x, y) {
     var ninja, xPos, yPos;
@@ -297,28 +340,9 @@ this.game = {
     });
   },
   update: function() {
-    var level, row, tile, x, xPos, y, yPos, _i, _len, _results;
-    level = new Level;
-    player.update();
-    _results = [];
-    for (y = _i = 0, _len = level.length; _i < _len; y = ++_i) {
-      row = level[y];
-      _results.push((function() {
-        var _j, _len1, _results1;
-        _results1 = [];
-        for (x = _j = 0, _len1 = row.length; _j < _len1; x = ++_j) {
-          tile = row[x];
-          if (!tile) {
-            continue;
-          }
-          xPos = x * gfx.tileW;
-          yPos = y * gfx.tileH;
-          _results1.push(gfx.drawSprite(tile[0], tile[1], xPos, yPos));
-        }
-        return _results1;
-      })());
-    }
-    return _results;
+    var mylevel;
+    mylevel = new Level(levels[0]);
+    return player.update();
   },
   render: function() {
     player.render(gfx);
