@@ -21,6 +21,9 @@ class Level
       for col, x in row
         switch col
           when "@" then new Dirt()
+          when "P"
+            @addPlayer x, y
+            new Block()
           when "X"
             @addNinja x, y
             new Block()
@@ -30,6 +33,8 @@ class Level
     @h = @map.length
     @w = @map[0].length
 
+  addPlayer: (x, y) ->
+    @game.setPlayer x * gfx.tileW, y * gfx.tileH, @
   addNinja: (x, y) ->
     xPos = x * gfx.tileW
     yPos = y * gfx.tileH

@@ -76,6 +76,8 @@ makeLevel = (ascii) ->
     @running = true
     console.log "Starting..."
   reset: ->
+    @player = new Player 3, 5
+    @level = new Level levels[0], @
     keys.reset()
     if not @running
       @start()
@@ -87,9 +89,13 @@ makeLevel = (ascii) ->
     @render()
     requestAnimationFrame ->
       game.tick()
+  setPlayer: (x, y, level) ->
+    @player.level = level
+    @player.x = x
+    @player.y = y
   update: ->
-    mylevel = new Level levels[0]
-    player.update()
+    @player.update()
+    @level.update()
     # for row, y in level
     #   for tile, x in row
     #     continue if not tile
@@ -97,8 +103,8 @@ makeLevel = (ascii) ->
     #     yPos = y * gfx.tileH
     #     gfx.drawSprite tile[0],tile[1], xPos, yPos
   render: ->
-    player.render gfx
+    @level.render gfx
+    @player.render gfx
     ninja1.render gfx
 
-player = new Player gfx.tileW * 3, gfx.tileH * 5
 ninja1 = new Ninja gfx.tileW * 4, gfx.tileH * 5
