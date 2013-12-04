@@ -5,9 +5,6 @@ class Level
   ninjas: []
   constructor: (level, @game) ->
     @load level
-    @addNinja 1, 1
-    ninja = @ninjas[0]
-    alert "Ninja 1 at: #{ninja.x}, #{ninja.y}"
   load: (level) ->
     # 1. Clear level items
     @ninjas = []
@@ -22,6 +19,9 @@ class Level
         switch col
           when "@" then new Dirt()
           when "O" then new Rock()
+          when "*"
+            @treasures++
+            new Treasure()
           when "P"
             @addPlayer x, y
             new Block()
