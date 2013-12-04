@@ -8,6 +8,7 @@ xargs coffee -w -b -j script/main.js \
                 src/levels/Level.coffee
                 src/blocks/Block.coffee
                 src/blocks/Dirt.coffee
+                src/blocks/Rock.coffee
                 src/entities/_Entity.coffee
                 src/entities/Player.coffee
                 src/entities/Ninja.coffee

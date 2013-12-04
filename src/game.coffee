@@ -35,6 +35,3 @@
   render: ->
     @level.render gfx
     @player.render gfx
-    ninja1.render gfx
-
-ninja1 = new Ninja gfx.tileW * 4, gfx.tileH * 5
