@@ -283,6 +283,14 @@ Treasure = (function(_super) {
 })(Block);
 
 Entity = (function() {
+  Entity.prototype.x = 0;
+
+  Entity.prototype.y = 0;
+
+  Entity.prototype.w = 18;
+
+  Entity.prototype.h = 24;
+
   Entity.prototype.speed = 4;
 
   Entity.prototype.dir = "LEFT";
@@ -298,6 +306,8 @@ Entity = (function() {
   Entity.prototype.render = function(gfx) {
     return gfx.ctx.fillText("?", this.x, this.y);
   };
+
+  Entity.prototype.move = function(x, y) {};
 
   return Entity;
 
