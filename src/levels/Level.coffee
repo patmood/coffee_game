@@ -53,3 +53,40 @@ class Level
       for block, x in row
         block.render gfx, x * gfx.tileW, y * gfx.tileH
     ninjas.render gfx for ninjas in @ninjas
+  getBlockIndex: (x, y) -> [
+    Math.floor x / gfx.tileW
+    Math.floor y / gfx.tileH
+  ]
+  getBlock: (x, y) ->
+    [xBlock, yBlock] = @getBlockIndex x, y
+    @map[yBlock]?[xBlock] or new Rock()
+  getBlocks: (coords) -> @getBlock x, y for [x, y] in coords
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
