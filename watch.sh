@@ -13,4 +13,5 @@ xargs coffee -w -b -j script/main.js \
                 src/entities/_Entity.coffee
                 src/entities/Player.coffee
                 src/entities/Ninja.coffee
+                src/_utils.coffee
                 src/game.coffee
