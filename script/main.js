@@ -330,6 +330,8 @@ Entity = (function() {
     this.level = level;
     this.x = x;
     this.y = y;
+    this.falling = true;
+    this.wasfalling = true;
   }
 
   Entity.prototype.update = function() {};
@@ -340,6 +342,10 @@ Entity = (function() {
 
   Entity.prototype.move = function(x, y) {
     var bl, br, tl, tr, xo, xv, yo, yv, _ref2, _ref3;
+    if (this.falling) {
+      y += this.speed * 2;
+    }
+    this.wasfalling = this.falling;
     xo = x;
     yo = y;
     xv = this.x + xo;
@@ -350,6 +356,7 @@ Entity = (function() {
     }
     if (y > 0 && (bl.solid || br.solid)) {
       yo = this.level.getBlockEdge(yv + (this.h - 1), "VERT") - this.y - this.h;
+      this.falling = false;
     }
     _ref3 = this.level.getBlocks([this.x, yv], [this.x, yv + (this.h - 1)], [this.x + (this.w - 1), yv], [this.x + (this.w - 1), yv + (this.h - 1)]), tl = _ref3[0], bl = _ref3[1], tr = _ref3[2], br = _ref3[3];
     if (x < 0 && (tl.solid || bl.solid)) {
@@ -359,7 +366,18 @@ Entity = (function() {
       xo = this.level.getBlockEdge(xv + (this.w - 1)) - this.x - this.w;
     }
     this.x += xo;
-    return this.y += yo;
+    this.y += yo;
+    return this.checkNewPos(x, y);
+  };
+
+  Entity.prototype.checkNewPos = function(origX, origY) {
+    var bl, br, nearBlocks, tl, tr, _ref2;
+    nearBlocks = (_ref2 = this.level.getBlocks([this.x, this.y], [this.x, this.y + this.h], [this.x + (this.w - 1), this.y], [this.x + (this.w - 1), this.y + this.h]), tl = _ref2[0], bl = _ref2[1], tr = _ref2[2], br = _ref2[3], _ref2);
+    if (!this.falling) {
+      if (!(bl.solid || br.solid)) {
+        return this.falling = true;
+      }
+    }
   };
 
   return Entity;
@@ -379,9 +397,11 @@ Player = (function(_super) {
     xo = yo = 0;
     if (keys.left) {
       xo -= this.speed;
+      this.dir = "LEFT";
     }
     if (keys.right) {
       xo += this.speed;
+      this.dir = "RIGHT";
     }
     if (keys.down) {
       yo += this.speed;
