@@ -358,6 +358,9 @@ Entity = (function() {
     this.y = y;
     this.falling = true;
     this.wasfalling = true;
+    this.onLadder = false;
+    this.wasOnLadder = false;
+    this.onTopOfLadder = false;
   }
 
   Entity.prototype.update = function() {};
@@ -397,12 +400,22 @@ Entity = (function() {
   };
 
   Entity.prototype.checkNewPos = function(origX, origY) {
-    var bl, br, nearBlocks, tl, tr, _ref2;
+    var bl, br, nearBlocks, tl, touchingALadder, tr, _ref2;
+    this.wasOnLadder = this.onLadder;
     nearBlocks = (_ref2 = this.level.getBlocks([this.x, this.y], [this.x, this.y + this.h], [this.x + (this.w - 1), this.y], [this.x + (this.w - 1), this.y + this.h]), tl = _ref2[0], bl = _ref2[1], tr = _ref2[2], br = _ref2[3], _ref2);
     if (!this.falling) {
       if (!(bl.solid || br.solid)) {
-        return this.falling = true;
+        this.falling = true;
       }
+    }
+    this.onLadder = false;
+    touchingALadder = nearBlocks.some(function(block) {
+      return block.climbable;
+    });
+    if (touchingALadder) {
+      console.log("I'm on a ladder!");
+      this.onLadder = true;
+      return this.falling = false;
     }
   };
 

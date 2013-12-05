@@ -8,6 +8,9 @@ class Entity
   constructor: (@level, @x, @y) ->
     @falling = true
     @wasfalling = true
+    @onLadder = false
+    @wasOnLadder = false
+    @onTopOfLadder = false
   update: ->
   render: (gfx) -> gfx.ctx.fillText "?", @x, @y
   move: (x, y) ->
@@ -56,6 +59,9 @@ class Entity
     @checkNewPos x, y
 
   checkNewPos: (origX, origY) ->
+    # Ladder?
+    @wasOnLadder = @onLadder
+
     nearBlocks = [tl, bl, tr, br] = @level.getBlocks(
       [@x, @y],
       [@x, @y + @h],
@@ -66,3 +72,16 @@ class Entity
     if not @falling
       if not (bl.solid or br.solid)
         @falling = true
+
+    # Touching ladder logic
+    @onLadder = false
+    touchingALadder = nearBlocks.some (block) -> block.climbable
+    if touchingALadder
+      console.log "I'm on a ladder!"
+      @onLadder = true
+      @falling = false
+
+      # Snap to ladders if going up or down
+
+
+
