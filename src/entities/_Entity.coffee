@@ -68,11 +68,6 @@ class Entity
       [@x + (@w - 1), @y],
       [@x + (@w - 1), @y + @h])
 
-    # Solid ground?
-    if not @falling
-      if not (bl.solid or br.solid)
-        @falling = true
-
     # Touching ladder logic
     @onLadder = false
     touchingALadder = nearBlocks.some (block) -> block.climbable
@@ -82,6 +77,19 @@ class Entity
       @falling = false
 
       # Snap to ladders if going up or down
+      if origY isnt 0
+        snapAmount = utils.snap @x, gfx.tileW
+        if not (bl.climbable or tl.climbable)
+          @x = snapAmount + gfx.tileW
+        if not (br.climbable or tr.climbable)
+          @x = snapAmount
 
+    @onTopOfLadder =
+      @onLadder and not (tl.climbable or tr.climbable) and
+      (@y + @h) % gfx.tileH is 0
 
+    # Solid ground?
+    if not @falling and not @onLadder
+      if not (bl.solid or br.solid or bl.climbable or br.climbable)
+        @falling = true
 

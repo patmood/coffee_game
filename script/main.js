@@ -400,14 +400,9 @@ Entity = (function() {
   };
 
   Entity.prototype.checkNewPos = function(origX, origY) {
-    var bl, br, nearBlocks, tl, touchingALadder, tr, _ref2;
+    var bl, br, nearBlocks, snapAmount, tl, touchingALadder, tr, _ref2;
     this.wasOnLadder = this.onLadder;
     nearBlocks = (_ref2 = this.level.getBlocks([this.x, this.y], [this.x, this.y + this.h], [this.x + (this.w - 1), this.y], [this.x + (this.w - 1), this.y + this.h]), tl = _ref2[0], bl = _ref2[1], tr = _ref2[2], br = _ref2[3], _ref2);
-    if (!this.falling) {
-      if (!(bl.solid || br.solid)) {
-        this.falling = true;
-      }
-    }
     this.onLadder = false;
     touchingALadder = nearBlocks.some(function(block) {
       return block.climbable;
@@ -415,7 +410,22 @@ Entity = (function() {
     if (touchingALadder) {
       console.log("I'm on a ladder!");
       this.onLadder = true;
-      return this.falling = false;
+      this.falling = false;
+      if (origY !== 0) {
+        snapAmount = utils.snap(this.x, gfx.tileW);
+        if (!(bl.climbable || tl.climbable)) {
+          this.x = snapAmount + gfx.tileW;
+        }
+        if (!(br.climbable || tr.climbable)) {
+          this.x = snapAmount;
+        }
+      }
+    }
+    this.onTopOfLadder = this.onLadder && !(tl.climbable || tr.climbable) && (this.y + this.h) % gfx.tileH === 0;
+    if (!this.falling && !this.onLadder) {
+      if (!(bl.solid || br.solid || bl.climbable || br.climbable)) {
+        return this.falling = true;
+      }
     }
   };
 
@@ -442,10 +452,10 @@ Player = (function(_super) {
       xo += this.speed;
       this.dir = "RIGHT";
     }
-    if (keys.down) {
+    if (keys.down && this.onLadder) {
       yo += this.speed;
     }
-    if (keys.up) {
+    if (keys.up && this.onLadder && !this.onTopOfLadder) {
       yo -= this.speed;
     }
     return this.move(xo, yo);
