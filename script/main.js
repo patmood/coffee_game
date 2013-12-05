@@ -353,7 +353,7 @@ Entity = (function() {
     }
     _ref3 = this.level.getBlocks([this.x, yv], [this.x, yv + (this.h - 1)], [this.x + (this.w - 1), yv], [this.x + (this.w - 1), yv + (this.h - 1)]), tl = _ref3[0], bl = _ref3[1], tr = _ref3[2], br = _ref3[3];
     if (x < 0 && (tl.solid || bl.solid)) {
-      xo = this.level.getBlockEdge(this.x) - this.x;
+      xo = this.level.getBlockEdge(this.x) - this.x + this.w;
     }
     if (x > 0 && (tr.solid || br.solid)) {
       xo = this.level.getBlockEdge(xv + (this.w - 1)) - this.x - this.w;

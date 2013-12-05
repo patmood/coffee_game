@@ -37,7 +37,7 @@ class Entity
 
     # 5. If edges overlap, move entity back a little
     if x < 0 and (tl.solid or bl.solid)
-      xo = @level.getBlockEdge(@x) - @x
+      xo = @level.getBlockEdge(@x) - @x + @w
     if x > 0 and (tr.solid or br.solid)
       xo = @level.getBlockEdge(xv + (@w - 1)) - @x - @w
 
