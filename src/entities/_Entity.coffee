@@ -68,11 +68,13 @@ class Entity
       [@x + (@w - 1), @y],
       [@x + (@w - 1), @y + @h])
 
+    # Collect any touchables
+    block.touch @ for block in nearBlocks when block.touchable
+
     # Touching ladder logic
     @onLadder = false
     touchingALadder = nearBlocks.some (block) -> block.climbable
     if touchingALadder
-      console.log "I'm on a ladder!"
       @onLadder = true
       @falling = false
 
@@ -92,4 +94,5 @@ class Entity
     if not @falling and not @onLadder
       if not (bl.solid or br.solid or bl.climbable or br.climbable)
         @falling = true
+
 

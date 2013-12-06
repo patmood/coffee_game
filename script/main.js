@@ -85,7 +85,7 @@ document.addEventListener("keyup", function(e) {
 levels = [
   {
     name: "DIG and BUILD",
-    data: ".P................X..*..\n@-@@.........@@@@@@@-@..\n.#..@@@.............#...\n.#.....@@.@@.....X..#...\n@OO#.........#@@...O#..^\n...#.........#......#.^O\n...#..@@-@@@@#..-@@@@@OO\n...#....#....#..#.......\n...#....#....#..#.......\n...#....#....#..#.......\n@-@@OOOOO.#.@@@@@#@@-@@@\n.#.X......#......#..#...\n.#...*....#......#..#...\n####..@@#@@..-@@@@@@@..*\n####....#....#.........#\n####....#....#.........#\nOOOOOOOOOOOOOOOOOOOOOOOO"
+    data: ".P................X..*..\n@-@@.*.......@@@@@@@-@..\n.#..@@@.............#...\n.#.....@@.@@.....X..#...\n@OO#.........#@@...O#..^\n...#.........#......#.^O\n...#..@@-@@@@#..-@@@@@OO\n...#....#....#..#.......\n...#....#....#..#.......\n...#....#....#..#.......\n@-@@OOOOO.#.@@@@@#@@-@@@\n.#.X......#......#..#...\n.#...*....#......#..#...\n####..@@#@@..-@@@@@@@..*\n####....#....#.........#\n####....#....#.........#\nOOOOOOOOOOOOOOOOOOOOOOOO"
   }
 ];
 
@@ -178,13 +178,13 @@ Level = (function() {
   };
 
   Level.prototype.update = function() {
-    var block, ninjas, row, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _results;
+    var block, ninjas, row, x, y, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _results;
     _ref = this.map;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      row = _ref[_i];
-      for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
-        block = row[_j];
-        block.update();
+    for (y = _i = 0, _len = _ref.length; _i < _len; y = ++_i) {
+      row = _ref[y];
+      for (x = _j = 0, _len1 = row.length; _j < _len1; x = ++_j) {
+        block = row[x];
+        block.update(x, y, this);
       }
     }
     _ref1 = this.ninjas;
@@ -245,12 +245,24 @@ Level = (function() {
     return utils.snap(position, snapTo);
   };
 
+  Level.prototype.removeBlock = function(x, y, block) {
+    this.map[y][x] = new Block();
+    if (block.constructor === Treasure) {
+      if (--this.treasures === 0) {
+        alert("Level Complete!");
+        return this.game.reset();
+      }
+    }
+  };
+
   return Level;
 
 })();
 
 Block = (function() {
   Block.prototype.solid = false;
+
+  Block.prototype.touchable = false;
 
   Block.prototype.climbable = false;
 
@@ -321,18 +333,31 @@ Ladder = (function(_super) {
 Treasure = (function(_super) {
   __extends(Treasure, _super);
 
+  Treasure.prototype.touchable = true;
+
+  Treasure.prototype.collected = false;
+
   function Treasure() {
     this.yOff = Math.random() * Math.PI;
   }
 
-  Treasure.prototype.update = function() {
-    return this.yOff += Math.PI / 24;
+  Treasure.prototype.update = function(x, y, level) {
+    this.yOff += Math.PI / 24;
+    if (this.collected) {
+      return level.removeBlock(x, y, this);
+    }
   };
 
   Treasure.prototype.render = function(gfx, x, y) {
     var ySine;
     ySine = Math.floor(Math.sin(this.yOff) * 4);
     return gfx.drawSprite(5, 1, x, y + ySine);
+  };
+
+  Treasure.prototype.touch = function(entity) {
+    if (entity.constructor === Player) {
+      return this.collected = true;
+    }
   };
 
   return Treasure;
@@ -400,15 +425,20 @@ Entity = (function() {
   };
 
   Entity.prototype.checkNewPos = function(origX, origY) {
-    var bl, br, nearBlocks, snapAmount, tl, touchingALadder, tr, _ref2;
+    var bl, block, br, nearBlocks, snapAmount, tl, touchingALadder, tr, _i, _len, _ref2;
     this.wasOnLadder = this.onLadder;
     nearBlocks = (_ref2 = this.level.getBlocks([this.x, this.y], [this.x, this.y + this.h], [this.x + (this.w - 1), this.y], [this.x + (this.w - 1), this.y + this.h]), tl = _ref2[0], bl = _ref2[1], tr = _ref2[2], br = _ref2[3], _ref2);
+    for (_i = 0, _len = nearBlocks.length; _i < _len; _i++) {
+      block = nearBlocks[_i];
+      if (block.touchable) {
+        block.touch(this);
+      }
+    }
     this.onLadder = false;
     touchingALadder = nearBlocks.some(function(block) {
       return block.climbable;
     });
     if (touchingALadder) {
-      console.log("I'm on a ladder!");
       this.onLadder = true;
       this.falling = false;
       if (origY !== 0) {
