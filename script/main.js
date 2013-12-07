@@ -276,7 +276,10 @@ Level = (function() {
     }
     block = this.map[yb + 1][xb];
     if (block.digIt != null) {
-      return block.digIt();
+      block.digIt();
+    }
+    if (block.constructor === Block) {
+      return this.map[yb + 1][xb] = new Gravel();
     }
   };
 
@@ -411,6 +414,24 @@ Gravel = (function(_super) {
     _ref2 = Gravel.__super__.constructor.apply(this, arguments);
     return _ref2;
   }
+
+  Gravel.prototype.solid = true;
+
+  Gravel.prototype.digTime = 100;
+
+  Gravel.prototype.update = function(x, y, level) {
+    if (--this.digTime < 0) {
+      return level.removeBlock(x, y, this);
+    }
+  };
+
+  Gravel.prototype.render = function(gfx, x, y) {
+    var oldAlpha;
+    oldAlpha = gfx.ctx.globalAlpha;
+    gfx.ctx.golbalAlpha = this.digTime / 50;
+    gfx.drawSprite(4, 2, x, y);
+    return gfx.ctx.globalApha = oldAlpha;
+  };
 
   return Gravel;
 

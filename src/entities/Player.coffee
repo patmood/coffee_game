@@ -17,7 +17,7 @@ class Player extends Entity
     @move(xo, yo)
   render: (gfx) -> gfx.drawSprite 0, 0, @x, @y
   dig: ->
-    # 6 seconds between digging ability
+    # 6 seconds between digging/building ability
     return if utils.now() - @lastDig < (6 * 1000)
 
     @level.digAt @dir, @x, @y
