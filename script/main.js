@@ -267,6 +267,19 @@ Level = (function() {
     }
   };
 
+  Level.prototype.digAt = function(dir, x, y) {
+    var block, xb, yb, _ref;
+    _ref = this.getBlockIndex(x, y), xb = _ref[0], yb = _ref[1];
+    xb = xb + (dir === "RIGHT" ? 1 : -1);
+    if (yb + 1 > this.h || xb < 0 || xb > this.w - 1) {
+      return;
+    }
+    block = this.map[yb + 1][xb];
+    if (block.digIt != null) {
+      return block.digIt();
+    }
+  };
+
   return Level;
 
 })();
@@ -299,7 +312,22 @@ Dirt = (function(_super) {
   Dirt.prototype.solid = true;
 
   Dirt.prototype.render = function(gfx, x, y) {
-    return gfx.drawSprite(4, 1, x, y);
+    var oldAlpha;
+    oldAlpha = gfx.ctx.globalAlpha;
+    gfx.ctx.globalAlpha = 1 - this.digTime / 80;
+    gfx.drawSprite(4, 1, x, y);
+    return gfx.ctx.globalAlpha = oldAlpha;
+  };
+
+  Dirt.prototype.update = function() {
+    if (--this.digTime === 50) {
+      return this.solid = true;
+    }
+  };
+
+  Dirt.prototype.digIt = function() {
+    this.digTime = 80;
+    return this.solid = false;
   };
 
   return Dirt;
@@ -478,6 +506,10 @@ Entity = (function() {
 Player = (function(_super) {
   __extends(Player, _super);
 
+  Player.prototype.lastDig = function() {
+    return utils.now();
+  };
+
   function Player() {
     Player.__super__.constructor.apply(this, arguments);
     this.dir = "RIGHT";
@@ -494,6 +526,9 @@ Player = (function(_super) {
       xo += this.speed;
       this.dir = "RIGHT";
     }
+    if (keys.space) {
+      this.dig();
+    }
     if (keys.down && this.onLadder) {
       yo += this.speed;
     }
@@ -505,6 +540,14 @@ Player = (function(_super) {
 
   Player.prototype.render = function(gfx) {
     return gfx.drawSprite(0, 0, this.x, this.y);
+  };
+
+  Player.prototype.dig = function() {
+    if (utils.now() - this.lastDig < (6 * 1000)) {
+      return;
+    }
+    this.level.digAt(this.dir, this.x, this.y);
+    return this.lastDig = utils.now();
   };
 
   return Player;

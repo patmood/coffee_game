@@ -50,6 +50,7 @@ class Level
         block.update x, y, @
     ninjas.update() for ninjas in @ninjas
     @checkCollision @game.player, ninjas for ninjas in @ninjas
+
   render: (gfx) ->
     # Render level blocks
     for row, y in @map
@@ -80,13 +81,15 @@ class Level
     p.y <= b.y + b.h
       alert "You are dead."
       @game.reset()
+  digAt: (dir, x, y) ->
+    [xb, yb] = @getBlockIndex x, y
 
+    xb = xb + if dir == "RIGHT" then 1 else -1
+    return if yb + 1 > @h or xb < 0 or xb > @w - 1
+    block = @map[yb + 1][xb]
 
-
-
-
-
-
+    # Dig the block!
+    block.digIt() if block.digIt?
 
 
 
