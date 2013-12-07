@@ -41,7 +41,7 @@ class Level
   addNinja: (x, y) ->
     xPos = x * gfx.tileW
     yPos = y * gfx.tileH
-    ninja = new Ninja @, xPos, yPos
+    ninja = new Ninja @, xPos, yPos, @game.player
     @ninjas.push ninja
   update: ->
     # Update the level blocks

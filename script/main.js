@@ -173,7 +173,7 @@ Level = (function() {
     var ninja, xPos, yPos;
     xPos = x * gfx.tileW;
     yPos = y * gfx.tileH;
-    ninja = new Ninja(this, xPos, yPos);
+    ninja = new Ninja(this, xPos, yPos, this.game.player);
     return this.ninjas.push(ninja);
   };
 
@@ -536,7 +536,7 @@ Ninja = (function(_super) {
     if (--this.time < 0) {
       newMove = utils.rand(5);
       this.time = utils.rand(20, 40);
-      this.substate = (function() {
+      this.subState = (function() {
         switch (newMove) {
           case 0:
           case 1:
@@ -548,6 +548,14 @@ Ninja = (function(_super) {
             return "IDLE";
         }
       })();
+    }
+    if (this.onLadder && !this.wasOnLadder) {
+      if (Math.random() < 0.5) {
+        this.state = "HUNTING";
+      }
+    }
+    if (py === this.y) {
+      this.state = "HUNTING";
     }
     x = y = 0;
     switch (this.subState) {
@@ -565,6 +573,25 @@ Ninja = (function(_super) {
   Ninja.prototype.hunt = function(px, py) {
     var x, y;
     x = y = 0;
+    if (py === this.y || this.onTopOfLadder) {
+      if (px > this.x) {
+        x += this.speed;
+        this.dir = "RIGHT";
+      } else {
+        x -= this.speed;
+        this.dir = "LEFT";
+      }
+    } else if (this.onLadder) {
+      if (!this.onTopOfLadder && py < this.y) {
+        y -= this.speed;
+      }
+      if (py > this.y) {
+        y += this.speed;
+      }
+    } else {
+      this.state = "CRUISING";
+      this.subState = "LEFT";
+    }
     return [x, y];
   };
 
@@ -586,6 +613,8 @@ Ninja = (function(_super) {
     }).call(this), xo = _ref2[0], yo = _ref2[1];
     return this.move(xo, yo);
   };
+
+  Ninja.prototype.newMove = function() {};
 
   return Ninja;
 
