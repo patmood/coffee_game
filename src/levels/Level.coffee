@@ -49,6 +49,7 @@ class Level
       for block, x in row
         block.update x, y, @
     ninjas.update() for ninjas in @ninjas
+    @checkCollision @game.player, ninjas for ninjas in @ninjas
   render: (gfx) ->
     # Render level blocks
     for row, y in @map
@@ -72,7 +73,13 @@ class Level
       if --@treasures == 0
         alert "Level Complete!"
         @game.reset()
-
+  checkCollision: (p,b) ->
+    if p.x + p.w >= b.x and
+    p.x <= b.x + b.w and
+    p.y + p.h >= b.y and
+    p.y <= b.y + b.h
+      alert "You are dead."
+      @game.reset()
 
 
 
