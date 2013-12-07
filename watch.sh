@@ -11,6 +11,7 @@ xargs coffee -w -b -j script/main.js \
                 src/blocks/Rock.coffee
                 src/blocks/Ladder.coffee
                 src/blocks/Treasure.coffee
+                src/blocks/Gravel.coffee
                 src/entities/_Entity.coffee
                 src/entities/Player.coffee
                 src/entities/Ninja.coffee
