@@ -763,7 +763,11 @@ this.game = {
     return this.level.update();
   },
   render: function() {
+    var backX, backY;
     this.level.render(gfx);
-    return this.player.render(gfx);
+    this.player.render(gfx);
+    backX = 1 - (this.player.x / gfx.w) * 100;
+    backY = 1 - (this.player.y / gfx.h) * 100;
+    return gfx.ctx.canvas.style.backgroundPosition = "" + backX + "px " + backY + "px";
   }
 };
