@@ -1,3 +1,5 @@
 #game {
-  background: url('../resources/bg.png');
+  background: -webkit-radial-gradient( rgba(0, 0, 0, 0.0) 25%, rgba(0, 0, 0, 0.7)), url('../resources/bg.png');
+  background: -moz-radial-gradient( rgba(0, 0, 0, 0.0) 25%, rgba(0, 0, 0, 0.7)), url('../resources/bg.png');
+  background: -o-radial-gradient( rgba(0, 0, 0, 0.0) 25%, rgba(0, 0, 0, 0.7)), url('../resources/bg.png');
 }
