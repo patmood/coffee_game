@@ -3,8 +3,8 @@ gfx =
     canvas = $('#game')[0]
     @ctx = canvas?.getContext? "2d"
     return false if not @ctx
-    canvas.width = 800
-    canvas.height = 400
+    canvas.width = 576
+    canvas.height = 408
     @w = canvas.width
     @h = canvas.height
     true

@@ -12,8 +12,8 @@ gfx = {
     if (!this.ctx) {
       return false;
     }
-    canvas.width = 800;
-    canvas.height = 400;
+    canvas.width = 576;
+    canvas.height = 408;
     this.w = canvas.width;
     this.h = canvas.height;
     return true;
