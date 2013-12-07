@@ -18,11 +18,5 @@ keys =
         console.log "Fire Away!" if isDown
         @space = isDown
 
-document.addEventListener "keydown", (e) ->
-  keys.trigger e.keyCode, true
-, false
-
-document.addEventListener "keyup", (e) ->
-  keys.trigger e.keyCode, false
-, false
-
+$(document).keydown (e) -> keys.trigger e.keyCode, true
+$(document).keyup (e) -> keys.trigger e.keyCode, false

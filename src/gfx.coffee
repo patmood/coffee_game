@@ -1,6 +1,6 @@
 gfx =
   init: ->
-    canvas = document.querySelector "#game"
+    canvas = $('#game')[0]
     @ctx = canvas?.getContext? "2d"
     return false if not @ctx
     canvas.width = 800

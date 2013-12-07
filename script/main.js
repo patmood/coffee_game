@@ -7,7 +7,7 @@ var Block, Dirt, Entity, Gravel, Ladder, Level, Ninja, Player, Rock, Treasure, g
 gfx = {
   init: function() {
     var canvas;
-    canvas = document.querySelector("#game");
+    canvas = $('#game')[0];
     this.ctx = canvas != null ? typeof canvas.getContext === "function" ? canvas.getContext("2d") : void 0 : void 0;
     if (!this.ctx) {
       return false;
@@ -74,13 +74,13 @@ keys = {
   }
 };
 
-document.addEventListener("keydown", function(e) {
+$(document).keydown(function(e) {
   return keys.trigger(e.keyCode, true);
-}, false);
+});
 
-document.addEventListener("keyup", function(e) {
+$(document).keyup(function(e) {
   return keys.trigger(e.keyCode, false);
-}, false);
+});
 
 levels = [
   {
