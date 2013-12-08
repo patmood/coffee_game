@@ -14,8 +14,6 @@
     console.log "Starting..."
   reset: ->
     @screen = new TitleScreen()
-    @player = new Player 3, 5
-    @level = new Level levels[0], @
     keys.reset()
     if not @running
       @start()
@@ -27,10 +25,6 @@
     @render()
     requestAnimationFrame ->
       game.tick()
-  setPlayer: (x, y, level) ->
-    @player.level = level
-    @player.x = x
-    @player.y = y
   update: ->
     @screen.update()
   render: ->

@@ -1,8 +1,12 @@
 class GameScreen extends Screen
   levelNumber: 0
-  contructor: ->
+  constructor: ->
     @player = new Player()
     @startLevel()
+  setPlayer: (x, y, level) ->
+    @player.level = level
+    @player.x = x
+    @player.y = y
   update: ->
     @player.update()
     @level.update()
