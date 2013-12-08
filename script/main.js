@@ -546,7 +546,7 @@ Entity = (function() {
 
   Entity.prototype.h = 24;
 
-  Entity.prototype.speed = 4;
+  Entity.prototype.speed = 3;
 
   Entity.prototype.dir = "LEFT";
 
@@ -707,7 +707,7 @@ Ninja = (function(_super) {
     Ninja.__super__.constructor.call(this, level, x, y);
   }
 
-  Ninja.prototype.speed = 3;
+  Ninja.prototype.speed = 2;
 
   Ninja.prototype.render = function(gfx) {
     var fx;

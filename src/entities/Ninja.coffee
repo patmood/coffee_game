@@ -1,7 +1,7 @@
 class Ninja extends Entity
   time: 0
   constructor: (level, x, y, @player) -> super level, x, y
-  speed: 3
+  speed: 2
   render: (gfx) ->
     fx = if @dir is "LEFT" then 2 else 0
     fx += utils.counter 2

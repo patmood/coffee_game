@@ -3,7 +3,7 @@ class Entity
   y: 0
   w: 18
   h: 24
-  speed: 4
+  speed: 3
   dir: "LEFT"
   constructor: (@level, @x, @y) ->
     @falling = true
