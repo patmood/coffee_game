@@ -11,6 +11,6 @@ class TitleScreen extends Screen
     # Some instructions
     c.fillStyle = "#e0e0e0"
     c.font = "14pt monospace"
-    gfx.drawSprite 5, 1, 480 180
+    gfx.drawSprite 5, 1, 480, 180
     c.fillText "Collect all \"Pig's Boffin\" particles.", 50, 210
     c.fillText "Press space to start...", 50, 240
