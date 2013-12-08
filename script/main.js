@@ -572,12 +572,17 @@ Player = (function(_super) {
   };
 
   Player.prototype.render = function(gfx) {
-    var fx;
+    var fx, fy;
+    fy = 0;
     fx = this.dir === "LEFT" ? 2 : 0;
     if (keys.left || keys.right) {
       fx += utils.counter(2);
     }
-    return gfx.drawSprite(fx, 0, this.x, this.y);
+    if (this.falling) {
+      fy = 2;
+      fx = this.dir === "LEFT" ? 1 : 0;
+    }
+    return gfx.drawSprite(fx, fy, this.x, this.y);
   };
 
   Player.prototype.dig = function() {

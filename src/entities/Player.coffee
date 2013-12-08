@@ -16,9 +16,14 @@ class Player extends Entity
     yo -= @speed if keys.up and @onLadder and not @onTopOfLadder
     @move(xo, yo)
   render: (gfx) ->
+    fy = 0
     fx = if @dir is "LEFT" then 2 else 0
     fx += utils.counter 2 if keys.left or keys.right
-    gfx.drawSprite fx, 0, @x, @y
+    if @falling
+      fy = 2
+      fx = if @dir == "LEFT" then 1 else 0
+
+    gfx.drawSprite fx, fy, @x, @y
 
   dig: ->
     # 6 seconds between digging/building ability
