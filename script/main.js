@@ -138,6 +138,45 @@ GameScreen = (function(_super) {
     return _ref1;
   }
 
+  GameScreen.prototype.levelNumber = 0;
+
+  GameScreen.prototype.contructor = function() {
+    this.player = new Player();
+    return this.startLevel();
+  };
+
+  GameScreen.prototype.update = function() {
+    this.player.update();
+    return this.level.update();
+  };
+
+  GameScreen.prototype.startLevel = function() {
+    return this.level = new Level(levels[this.levelNumber], this);
+  };
+
+  GameScreen.prototype.levelComplete = function() {
+    if (++this.levelNumber >= levels.length) {
+      return game.win();
+    } else {
+      return this.startLevel();
+    }
+  };
+
+  GameScreen.prototype.render = function(gfx) {
+    var backX, backY, leftEdge, offx;
+    gfx.ctx.save();
+    gfx.ctx.scale(1.3, 1.3);
+    leftEdge = 210;
+    offx = this.player.x > leftEdge ? -this.player.x + leftEdge : 0;
+    gfx.ctx.translate(offx, -this.player.y + 130);
+    this.level.render(gfx);
+    this.player.render(gfx);
+    backX = 1 - (this.player.x / gfx.w) * 100;
+    backY = 1 - (this.player.y / gfx.h) * 100;
+    gfx.ctx.canvas.style.backgroundPosition = "" + backX + "px " + backY + "px";
+    return gfx.ctx.restore();
+  };
+
   return GameScreen;
 
 })(Screen);
@@ -794,6 +833,7 @@ utils = {
 };
 
 this.game = {
+  screen: null,
   running: false,
   init: function() {
     if (!gfx.init()) {
@@ -813,6 +853,7 @@ this.game = {
     return console.log("Starting...");
   },
   reset: function() {
+    this.screen = new TitleScreen();
     this.player = new Player(3, 5);
     this.level = new Level(levels[0], this);
     keys.reset();
@@ -838,21 +879,12 @@ this.game = {
     return this.player.y = y;
   },
   update: function() {
-    this.player.update();
-    return this.level.update();
+    return this.screen.update();
   },
   render: function() {
-    var backX, backY, leftEdge, offx;
-    gfx.ctx.save();
-    gfx.ctx.scale(1.3, 1.3);
-    leftEdge = 210;
-    offx = this.player.x > leftEdge ? -this.player.x + leftEdge : 0;
-    gfx.ctx.translate(offx, -this.player.y + 130);
-    this.level.render(gfx);
-    this.player.render(gfx);
-    backX = 1 - (this.player.x / gfx.w) * 100;
-    backY = 1 - (this.player.y / gfx.h) * 100;
-    gfx.ctx.canvas.style.backgroundPosition = "" + backX + "px " + backY + "px";
-    return gfx.ctx.restore();
+    return this.screen.render(gfx);
+  },
+  win: function() {
+    return alert("You Won!");
   }
 };
