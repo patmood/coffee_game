@@ -317,7 +317,7 @@ Dirt = (function(_super) {
   Dirt.prototype.render = function(gfx, x, y) {
     var oldAlpha;
     oldAlpha = gfx.ctx.globalAlpha;
-    gfx.ctx.globalAlpha = 1 - this.digTime / 80;
+    gfx.ctx.globalAlpha = 1 - this.digTime / 200;
     gfx.drawSprite(4, 1, x, y);
     return gfx.ctx.globalAlpha = oldAlpha;
   };
@@ -329,7 +329,7 @@ Dirt = (function(_super) {
   };
 
   Dirt.prototype.digIt = function() {
-    this.digTime = 80;
+    this.digTime = 200;
     return this.solid = false;
   };
 
@@ -417,7 +417,7 @@ Gravel = (function(_super) {
 
   Gravel.prototype.solid = true;
 
-  Gravel.prototype.digTime = 100;
+  Gravel.prototype.digTime = 200;
 
   Gravel.prototype.update = function(x, y, level) {
     if (--this.digTime < 0) {
@@ -428,7 +428,7 @@ Gravel = (function(_super) {
   Gravel.prototype.render = function(gfx, x, y) {
     var oldAlpha;
     oldAlpha = gfx.ctx.globalAlpha;
-    gfx.ctx.golbalAlpha = this.digTime / 50;
+    gfx.ctx.golbalAlpha = this.digTime / 100;
     gfx.drawSprite(4, 2, x, y);
     return gfx.ctx.globalApha = oldAlpha;
   };
