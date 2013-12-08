@@ -12,6 +12,8 @@ gfx =
   clear: ->
     @ctx.clearRect 0, 0, @w, @h
   load: (onload) ->
+    @title = new Image()
+    @title.src = "resources/title.png"
     @sprites = new Image()
     @sprites.src = "resources/sprites.png"
     @sprites.onload = -> onload()
