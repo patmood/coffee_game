@@ -2,7 +2,10 @@ class Ninja extends Entity
   time: 0
   constructor: (level, x, y, @player) -> super level, x, y
   speed: 3
-  render: (gfx) -> gfx.drawSprite 0, 1, @x, @y
+  render: (gfx) ->
+    fx = if @dir is "LEFT" then 2 else 0
+    fx += utils.counter 2
+    gfx.drawSprite fx, 1, @x, @y
   state: "CRUISING"
   subState: "IDLE"
   cruise: (px, py) ->
