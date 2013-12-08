@@ -355,7 +355,7 @@ Level = (function() {
     if (block.constructor === Treasure) {
       if (--this.treasures === 0) {
         alert("Level Complete!");
-        return this.game.reset();
+        return game.reset();
       }
     }
   };
@@ -363,7 +363,7 @@ Level = (function() {
   Level.prototype.checkCollision = function(p, b) {
     if (p.x + p.w >= b.x && p.x <= b.x + b.w && p.y + p.h >= b.y && p.y <= b.y + b.h) {
       alert("You are dead.");
-      return this.game.reset();
+      return game.reset();
     }
   };
 
@@ -585,9 +585,9 @@ Entity = (function() {
       yo = this.level.getBlockEdge(yv + (this.h - 1), "VERT") - this.y - this.h;
       this.falling = false;
     }
-    _ref5 = this.level.getBlocks([this.x, yv], [this.x, yv + (this.h - 1)], [this.x + (this.w - 1), yv], [this.x + (this.w - 1), yv + (this.h - 1)]), tl = _ref5[0], bl = _ref5[1], tr = _ref5[2], br = _ref5[3];
+    _ref5 = this.level.getBlocks([xv, yv], [xv, yv + (this.h - 1)], [xv + (this.w - 1), yv], [xv + (this.w - 1), yv + (this.h - 1)]), tl = _ref5[0], bl = _ref5[1], tr = _ref5[2], br = _ref5[3];
     if (x < 0 && (tl.solid || bl.solid)) {
-      xo = this.level.getBlockEdge(this.x) - this.x + this.w;
+      xo = this.level.getBlockEdge(this.x) - this.x;
     }
     if (x > 0 && (tr.solid || br.solid)) {
       xo = this.level.getBlockEdge(xv + (this.w - 1)) - this.x - this.w;

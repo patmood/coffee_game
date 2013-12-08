@@ -40,14 +40,14 @@ class Entity
 
     # 4. Check possible block collisions due to horizontal movement
     [tl, bl, tr, br] = @level.getBlocks(
-      [@x, yv],
-      [@x, yv + (@h - 1)],
-      [@x + (@w - 1), yv],
-      [@x + (@w - 1), yv + (@h - 1)])
+      [xv, yv],
+      [xv, yv + (@h - 1)],
+      [xv + (@w - 1), yv],
+      [xv + (@w - 1), yv + (@h - 1)])
 
     # 5. If edges overlap, move entity back a little
     if x < 0 and (tl.solid or bl.solid)
-      xo = @level.getBlockEdge(@x) - @x + @w
+      xo = @level.getBlockEdge(@x) - @x
     if x > 0 and (tr.solid or br.solid)
       xo = @level.getBlockEdge(xv + (@w - 1)) - @x - @w
 

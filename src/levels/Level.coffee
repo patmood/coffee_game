@@ -73,14 +73,14 @@ class Level
     if block.constructor is Treasure
       if --@treasures == 0
         alert "Level Complete!"
-        @game.reset()
+        game.reset()
   checkCollision: (p,b) ->
     if p.x + p.w >= b.x and
     p.x <= b.x + b.w and
     p.y + p.h >= b.y and
     p.y <= b.y + b.h
       alert "You are dead."
-      @game.reset()
+      game.reset()
   digAt: (dir, x, y) ->
     [xb, yb] = @getBlockIndex x, y
 
