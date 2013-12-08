@@ -22,6 +22,8 @@ gfx = {
     return this.ctx.clearRect(0, 0, this.w, this.h);
   },
   load: function(onload) {
+    this.title = new Image();
+    this.title.src = "resources/title.png";
     this.sprites = new Image();
     this.sprites.src = "resources/sprites.png";
     return this.sprites.onload = function() {
